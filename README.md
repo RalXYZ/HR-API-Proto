@@ -66,18 +66,18 @@ Get a list of current members in the database, for example:
 - Response:  
 ```json
 [
-	{
-		"uid": "0",
-		"zjuid": "3190000000",
-		"name": "喵呜",
-		"qscid": "香草"
-	},
-	{
-		"uid": "1",
-		"zjuid": "3190000001",
-		"name": "猫猫",
-		"qscid": "巧克力"
-	}
+    {
+        "uid": "0",
+        "zjuid": "3190000000",
+        "name": "喵呜",
+        "qscid": "香草"
+    },
+    {
+        "uid": "1",
+        "zjuid": "3190000001",
+        "name": "猫猫",
+        "qscid": "巧克力"
+    }
 ]
 ```
 
