@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -10,19 +10,19 @@ import (
 
 const SecretKey = "MySuperSafeSecretKey"
 
-type customClaims struct {
+type CustomJWTClaim struct {
 	UserId int64
 	jwt.StandardClaims
 }
 
-func generateToken() (tokenString string, expireTime time.Time) {
+func GenerateJWT() (tokenString string, expireTime time.Time) {
 	maxAge := 60 * 60 * 24
-	expireTime = time.Now().Add(time.Duration(maxAge)*time.Second)
-	myCustomClaim := &customClaims{
+	expireTime = time.Now().Add(time.Duration(maxAge) * time.Second)
+	myCustomClaim := &CustomJWTClaim{
 		UserId: 6,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer: "RalXYZ",
+			Issuer:    "RalXYZ",
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, myCustomClaim)
@@ -35,22 +35,22 @@ func generateToken() (tokenString string, expireTime time.Time) {
 	return
 }
 
-func parseToken(tokenString string) (*customClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &customClaims{}, func(token *jwt.Token) (interface{}, error) {
+func ParseToken(tokenString string) (*CustomJWTClaim, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &CustomJWTClaim{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpexted singing method: %v\n", token.Header["alg"])
 		} else {
 			return []byte(SecretKey), nil
 		}
 	})
-	if claims, ok := token.Claims.(*customClaims); ok && token.Valid {
+	if claims, ok := token.Claims.(*CustomJWTClaim); ok && token.Valid {
 		return claims, nil
 	} else {
 		return nil, err
 	}
 }
 
-func setCookie(c *echo.Context, name string, token string, expireTime *time.Time) {
+func SetCookie(c *echo.Context, name string, token string, expireTime *time.Time) {
 	cookie := new(http.Cookie)
 	cookie.Name = name
 	cookie.Value = token
@@ -58,7 +58,7 @@ func setCookie(c *echo.Context, name string, token string, expireTime *time.Time
 	(*c).SetCookie(cookie)
 }
 
-func getCookie(c *echo.Context, name string) (token string, err error) {
+func GetCookie(c *echo.Context, name string) (token string, err error) {
 	cookie, err := (*c).Cookie(name)
 	if err != nil {
 		return
@@ -67,10 +67,10 @@ func getCookie(c *echo.Context, name string) (token string, err error) {
 	return
 }
 
-func authentication(c *echo.Context, name string) bool {
-	if token, err := getCookie(c, name); err != nil {
+func Authentication(c *echo.Context, name string) bool {
+	if token, err := GetCookie(c, name); err != nil {
 		return false
-	} else if _, err = parseToken(token); err != nil {
+	} else if _, err = ParseToken(token); err != nil {
 		return false
 	} else {
 		return true
