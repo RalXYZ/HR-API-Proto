@@ -35,7 +35,7 @@ The status code will be set to `200`/`400`.
 The status code will be set to `200`/`401`.  
 This is an important API to help users get access to authorized APIs.  
 When invoking this API, cookie in the user's browser will be set.  
-More specifically, `JWT` is used instead of cookie, to enhance security.  
+More specifically, `JWT` is used in this API.   
 
 ---
 
