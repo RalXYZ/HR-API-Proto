@@ -6,12 +6,15 @@ A set of simple HR APIs for practicing.
 | :----: | :-----: | :-----: | :-----: | :----: |
 | echo | gorm | jwt-go | bcrypt | MariaDB |
 
+There are *two* apis in this project. One is designed for browser requests, named `urlapi`. Another is designed for app requests, named `api`. The logic of these two apis are quite similar.  
+The biggest difference between them is that `urlapi` passes parameters in url instead of request body. What's more, `urlapi` set cookies.  
+In this documentation, I will mainly introduce `api`.  
+
 ## APIs
 
 ### Unauthorized API
 
-#### `/api/register`
-- Method: `POST`
+#### `POST` `/api/register`
 - Basic request syntax:
 ```json
 {
@@ -23,8 +26,7 @@ The status code will be set to `200`/`400`.
 
 ---
 
-#### `/api/login`
-- Method: `POST`  
+#### `POST` `/api/login`
 - Basic request syntax:
 ```json
 {
@@ -60,9 +62,9 @@ The status code will be set to `400`.
 
 ---
 
-#### `/api/member`
-Get a list of current members in the database, for example:  
-- Method: `GET`  
+#### `GET` `/api/member`
+Get a list of current members in the database.  
+
 - Response:  
 ```json
 [
@@ -83,9 +85,8 @@ Get a list of current members in the database, for example:
 
 ---
 
-#### `/api/member`
+#### `POST` `/api/member`
 This API creates a new member in the database.  
-- Method: `POST`  
 - Basic request syntax:
 ```json
 {
@@ -100,9 +101,8 @@ This API creates a new member in the database.
 
 ---
 
-#### `/api/member`
+#### `DELETE` `/api/member`
 This API deletes a member by its id in the database.  
-- Method: `DELETE`  
 - Basic request syntax:  
 ```json
 {
